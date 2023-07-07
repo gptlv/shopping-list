@@ -1,24 +1,27 @@
 import { useState } from "react";
+// import { motion } from "framer-motion";
 
 interface Props {
   onSubmit: (itemName: string) => void;
+  sortItems: (sortOption: string) => void;
+  sortOption: string;
 }
 
-const InputForm = ({ onSubmit }: Props) => {
+const InputForm = ({ onSubmit, sortItems, sortOption }: Props) => {
   const [itemName, setItemName] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (itemName === "") return;
-
     onSubmit(itemName);
     setItemName("");
+    sortItems(sortOption);
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex self-stretch justify-between gap-4"
+      className="flex self-stretch justify-between gap-4 text-2xl "
     >
       <div className="form-row w-full">
         {/* <label htmlFor="item" className="form-label">

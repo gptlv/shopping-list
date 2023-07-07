@@ -1,4 +1,13 @@
 import ListItem from "./ListItem";
+// import { motion } from "framer-motion";
+import { SortOption } from "../../shared/types";
+// const container = {
+//   hidden: {},
+//   visible: {
+//     transition: { staggerChildren: 0.15 },
+//   },
+// };
+
 interface Item {
   id: string;
   name: string;
@@ -13,8 +22,8 @@ interface Props {
   increaseAmount: (id: string) => void;
   decreaseAmount: (id: string) => void;
   setIsAllChecked: (checked: boolean) => void;
-  handleSortOptionChange: (sortOption: string) => void;
-  sortOption: string;
+  sortOption: SortOption;
+  sortItems: (sortOption: SortOption) => void;
 }
 
 const ShoppingList = ({
@@ -24,11 +33,17 @@ const ShoppingList = ({
   increaseAmount,
   decreaseAmount,
   setIsAllChecked,
-  handleSortOptionChange,
   sortOption,
+  sortItems,
 }: Props) => {
   return (
-    <ul className="list-none mx-1 my-2 flex flex-col self-stretch justify-between">
+    <ul
+      className="list-none mx-1 my-2 flex flex-col self-stretch justify-between"
+      // initial="hidden"
+      // whileInView="visible"
+      // viewport={{ once: true, amount: 0.5 }}
+      // variants={container}
+    >
       {items.length === 0 && <p>No items in list</p>}
       {items.map((item) => {
         return (
@@ -41,8 +56,8 @@ const ShoppingList = ({
             decreaseAmount={decreaseAmount}
             setIsAllChecked={setIsAllChecked}
             items={items}
-            handleSortOptionChange={handleSortOptionChange}
             sortOption={sortOption}
+            sortItems={sortItems}
           />
         );
       })}

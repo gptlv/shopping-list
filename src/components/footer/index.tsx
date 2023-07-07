@@ -7,7 +7,7 @@ interface Item {
 
 const Footer = ({ items }: { items: Item[] }) => {
   return (
-    <footer>
+    <footer className="text-center font-bold text-xl">
       {items.length !== 0 ? (
         <span>
           Total:{" "}
