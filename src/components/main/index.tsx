@@ -78,7 +78,16 @@ const Main = ({ items, setItems }: Props) => {
   function increaseAmount(id: string) {
     setItems((currentItems: Item[]) => {
       return currentItems.map((item) => {
-        if (item.id === id) return { ...item, amount: item.amount + 1 };
+        if (item.id === id) return { ...item, amount:  item.amount < 99 ? item.amount + 1 : item.amount };
+        return item;
+      });
+    });
+  }
+
+  function handleAmountChange(id: string, amount: number) {
+    setItems((currentItems: Item[]) => {
+      return currentItems.map((item) => {
+        if (item.id === id) return { ...item, amount};
         return item;
       });
     });
@@ -88,7 +97,7 @@ const Main = ({ items, setItems }: Props) => {
     setItems((currentItems: Item[]) => {
       return currentItems.map((item) => {
         if (item.id === id && item.amount > 0)
-          return { ...item, amount: item.amount - 1 };
+          return { ...item, amount: item.amount > 0 ? item.amount - 1 : item.amount, checked: item.amount === 1 ? true : false  };
         return item;
       });
     });
@@ -188,6 +197,7 @@ const Main = ({ items, setItems }: Props) => {
         ></GlobalButtons>
         <ShoppingList
           items={items}
+          handleAmountChange={handleAmountChange}
           deleteItem={deleteItem}
           toggleItem={toggleItem}
           increaseAmount={increaseAmount}

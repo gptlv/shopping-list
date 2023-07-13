@@ -1,4 +1,4 @@
-import { PlusIcon, MinusIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { PlusIcon, MinusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 // import { motion } from "framer-motion";
 import { SortOption } from "../../shared/types";
 
@@ -22,6 +22,7 @@ interface Props {
   deleteItem: (id: string) => void;
   toggleItem: (id: string, checked: boolean) => void;
   increaseAmount: (id: string) => void;
+  handleAmountChange: (id: string, amount: number) => void;
   decreaseAmount: (id: string) => void;
   setIsAllChecked: (checked: boolean) => void;
   items: Item[];
@@ -37,6 +38,7 @@ const ListItem = ({
   deleteItem,
   toggleItem,
   increaseAmount,
+  handleAmountChange,
   decreaseAmount,
   sortOption,
   sortItems,
@@ -57,41 +59,68 @@ const ListItem = ({
             sortItems(sortOption);
           }}
         />
-        <span className="ml-2">
+        <p className="ml-2">
           <span className="item-name whitespace-normal">{name}</span>
-          <span className="item-amount"> ({amount})</span>
-        </span>
+        </p>
       </label>
-      <div className="flex flex-nowrap">
-        <button
-          className="button increase"
-          onClick={() => {
-            increaseAmount(id);
-            sortItems(sortOption);
-          }}
-          disabled={checked}
-        >
-          <PlusIcon className="w-8 h-8 md:h-10 md:w-10" />
-        </button>
-        <button
-          className="button decrease"
-          onClick={() => {
-            decreaseAmount(id);
-            sortItems(sortOption);
-          }}
-          disabled={checked}
-        >
-          <MinusIcon className="w-8 h-8 md:h-10 md:w-10" />
-        </button>
-        <button
-          className="button delete"
-          onClick={() => {
-            deleteItem(id);
-            sortItems(sortOption);
-          }}
-        >
-          <XMarkIcon className="w-8 h-8 md:h-10 md:w-10" />
-        </button>
+      <div className="flex flex-nowrap gap-1">
+        <div className="flex flex-nowrap items-center justify-center">
+          <button
+            className={`w-8 h-8 md:h-10 md:w-10 bg-white rounded-l-lg ${
+              checked || amount === 0 ? "text-gray-400" : ""
+            }`}
+            onClick={() => {
+              if (amount === 1) toggleItem(id, true);
+              decreaseAmount(id);
+              sortItems(sortOption);
+            }}
+            disabled={checked || amount === 0}
+          >
+            <MinusIcon className="w-8 h-8 md:h-10 md:w-10" />
+          </button>
+          <input
+            type="number"
+            className={`w-8 h-8 md:h-10 md:w-10 text-center border-l-2 border-r-2  text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+              checked ? "text-gray-400" : ""
+            }`}
+            min="1"
+            max="99"
+            readOnly={checked}
+            onChange={(e) => {
+              const currentValue = parseInt(e.target.value, 10);
+              if (Number.isNaN(currentValue)) {
+                handleAmountChange(id, 0);
+                return;
+              }
+              if (currentValue < 1 || currentValue > 99) return;
+              handleAmountChange(id, currentValue);
+            }}
+            value={amount}
+          ></input>
+          <button
+            className={`w-8 h-8 md:h-10 md:w-10 bg-white rounded-r-lg ${
+              checked ? "text-gray-400" : ""
+            }`}
+            onClick={() => {
+              increaseAmount(id);
+              sortItems(sortOption);
+            }}
+            disabled={checked}
+          >
+            <PlusIcon />
+          </button>
+        </div>
+        <div className="flex items-center justify-center ">
+          <button
+            className="w-8 h-8 md:h-10 md:w-10 bg-red-500 rounded-lg"
+            onClick={() => {
+              deleteItem(id);
+              sortItems(sortOption);
+            }}
+          >
+            <XMarkIcon className="" />
+          </button>
+        </div>
       </div>
     </li>
   );

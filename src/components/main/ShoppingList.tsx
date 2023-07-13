@@ -20,6 +20,7 @@ interface Props {
   deleteItem: (id: string) => void;
   toggleItem: (id: string, checked: boolean) => void;
   increaseAmount: (id: string) => void;
+  handleAmountChange: (id: string, amount: number) => void;
   decreaseAmount: (id: string) => void;
   setIsAllChecked: (checked: boolean) => void;
   sortOption: SortOption;
@@ -31,6 +32,7 @@ const ShoppingList = ({
   deleteItem,
   toggleItem,
   increaseAmount,
+  handleAmountChange,
   decreaseAmount,
   setIsAllChecked,
   sortOption,
@@ -53,6 +55,7 @@ const ShoppingList = ({
             deleteItem={deleteItem}
             toggleItem={toggleItem}
             increaseAmount={increaseAmount}
+            handleAmountChange={handleAmountChange}
             decreaseAmount={decreaseAmount}
             setIsAllChecked={setIsAllChecked}
             items={items}
